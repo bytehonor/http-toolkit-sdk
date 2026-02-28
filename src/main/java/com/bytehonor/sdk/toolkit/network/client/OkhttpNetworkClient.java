@@ -30,15 +30,15 @@ import okhttp3.ResponseBody;
  * @author lijianqiang
  *
  */
-public class OkhttpNetwork {
+public class OkhttpNetworkClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OkhttpNetwork.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OkhttpNetworkClient.class);
 
     private static final String USER_AGENT_KEY = "User-Agent";
 
     private final OkHttpClient client;
 
-    private OkhttpNetwork() {
+    private OkhttpNetworkClient() {
         this.client = build();
     }
 
@@ -57,10 +57,10 @@ public class OkhttpNetwork {
     }
 
     private static class LazzyHolder {
-        private static OkhttpNetwork SINGLE = new OkhttpNetwork();
+        private static OkhttpNetworkClient SINGLE = new OkhttpNetworkClient();
     }
 
-    private static OkhttpNetwork self() {
+    private static OkhttpNetworkClient self() {
         return LazzyHolder.SINGLE;
     }
 

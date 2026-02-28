@@ -39,9 +39,9 @@ import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
  * @author lijianqiang
  *
  */
-public class ApacheNetwork {
+public class ApacheNetworkClient {
 
-    private static Logger LOG = LoggerFactory.getLogger(ApacheNetwork.class);
+    private static Logger LOG = LoggerFactory.getLogger(ApacheNetworkClient.class);
 
     private static final String USER_AGENT = "User-Agent";
 
@@ -55,7 +55,7 @@ public class ApacheNetwork {
 
     private final CloseableHttpClient client;
 
-    private ApacheNetwork() {
+    private ApacheNetworkClient() {
         this.client = build();
     }
 
@@ -79,10 +79,10 @@ public class ApacheNetwork {
     }
 
     private static class LazzyHolder {
-        private static ApacheNetwork SINGLE = new ApacheNetwork();
+        private static ApacheNetworkClient SINGLE = new ApacheNetworkClient();
     }
 
-    private static ApacheNetwork self() {
+    private static ApacheNetworkClient self() {
         return LazzyHolder.SINGLE;
     }
 

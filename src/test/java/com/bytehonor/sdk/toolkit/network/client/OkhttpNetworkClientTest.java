@@ -16,16 +16,16 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
 
-public class OkhttpNetworkTest {
+public class OkhttpNetworkClientTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OkhttpNetworkTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OkhttpNetworkClientTest.class);
 
 //    @Test
     public void testGetString2() {
         boolean isOk = true;
         try {
             // 测测header是否是浏览器的
-            String html = OkhttpNetwork.get("https://www.bytehonor.com");
+            String html = OkhttpNetworkClient.get("https://www.bytehonor.com");
             LOG.info("html:{}", html);
         } catch (NetworkToolkitException e) {
             LOG.error("xxxx", e);
@@ -46,7 +46,7 @@ public class OkhttpNetworkTest {
                 @Override
                 public void run() {
                     try {
-                        OkhttpNetwork.get("https://www.baidu.com");
+                        OkhttpNetworkClient.get("https://www.baidu.com");
                         ai.incrementAndGet();
                         countDownLatch.countDown();
                     } catch (NetworkToolkitException e) {
@@ -77,7 +77,7 @@ public class OkhttpNetworkTest {
             paramsMap.put("status", "xx");
             paramsMap.put("access_token", "xx");
 
-            String res = OkhttpNetwork.uploadPic(url, paramsMap, file);
+            String res = OkhttpNetworkClient.uploadPic(url, paramsMap, file);
             LOG.info("res:{}", res);
         } catch (Exception e) {
             isOk = false;
@@ -92,7 +92,7 @@ public class OkhttpNetworkTest {
         String filePath = "D:/test/A股列表.xlsx";
         boolean isOk = true;
         try {
-            OkhttpNetwork.download(url, filePath);
+            OkhttpNetworkClient.download(url, filePath);
         } catch (Exception e) {
             isOk = false;
             LOG.error("testUpload", e);
@@ -109,7 +109,7 @@ public class OkhttpNetworkTest {
             // Referer: https://m.weibo.cn/detail/4854157586215881
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Referer", "https://m.weibo.cn/detail/4854157586215881");
-            OkhttpNetwork.download(url, path, headers);
+            OkhttpNetworkClient.download(url, path, headers);
             File file = new File(path);
             isOk = file.exists();
             LOG.info("isOk:{}", isOk);
@@ -127,7 +127,7 @@ public class OkhttpNetworkTest {
             // 测测header是否是浏览器的
             String url = "https://proxy.bytehonor.com/body/test";
             String text = "helloworld1";
-            String res = OkhttpNetwork.postPlain(url, text);
+            String res = OkhttpNetworkClient.postPlain(url, text);
             LOG.info("res:{}", res);
         } catch (NetworkToolkitException e) {
             LOG.error("xxxx", e);

@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
 
-public class ApacheNetworkTest {
+public class ApacheNetworkClientTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ApacheNetworkTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApacheNetworkClientTest.class);
 
     @Test
     public void testGetString2() {
@@ -23,7 +23,7 @@ public class ApacheNetworkTest {
             // 测测header是否是浏览器的
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("User-Agent", "Second");
-            String html = ApacheNetwork.get("https://vue.bytehonor.com", null, headers);
+            String html = ApacheNetworkClient.get("https://vue.bytehonor.com", null, headers);
             LOG.info("html:{}", html);
         } catch (NetworkToolkitException e) {
             LOG.error("xxxx", e);
@@ -42,7 +42,7 @@ public class ApacheNetworkTest {
             // Referer: https://m.weibo.cn/detail/4854157586215881
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Referer", "https://m.weibo.cn/detail/4854157586215881");
-            ApacheNetwork.download(url, path, headers);
+            ApacheNetworkClient.download(url, path, headers);
             File file = new File(path);
             isOk = file.exists();
             LOG.info("isOk:{}", isOk);
