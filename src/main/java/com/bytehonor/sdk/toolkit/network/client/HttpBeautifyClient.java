@@ -31,7 +31,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.toolkit.network.config.ApacheConfig;
+import com.bytehonor.sdk.toolkit.network.config.HttpConfig;
 import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
 
 
@@ -39,9 +39,9 @@ import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
  * @author lijianqiang
  *
  */
-public class ApacheNetworkClient {
+public class HttpBeautifyClient {
 
-    private static Logger LOG = LoggerFactory.getLogger(ApacheNetworkClient.class);
+    private static Logger LOG = LoggerFactory.getLogger(HttpBeautifyClient.class);
 
     private static final String USER_AGENT = "User-Agent";
 
@@ -55,15 +55,15 @@ public class ApacheNetworkClient {
 
     private final CloseableHttpClient client;
 
-    private ApacheNetworkClient() {
+    private HttpBeautifyClient() {
         this.client = build();
     }
 
     public static CloseableHttpClient build() {
-        return build(ApacheConfig.config());
+        return build(HttpConfig.config());
     }
 
-    public static CloseableHttpClient build(ApacheConfig httpConfig) {
+    public static CloseableHttpClient build(HttpConfig httpConfig) {
         RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(httpConfig.getSocketTimeout())
                 .setConnectTimeout(httpConfig.getConnectTimeout())
                 .setConnectionRequestTimeout(httpConfig.getConnectRequestTimeout()).build();
@@ -79,10 +79,10 @@ public class ApacheNetworkClient {
     }
 
     private static class LazzyHolder {
-        private static ApacheNetworkClient SINGLE = new ApacheNetworkClient();
+        private static HttpBeautifyClient SINGLE = new HttpBeautifyClient();
     }
 
-    private static ApacheNetworkClient self() {
+    private static HttpBeautifyClient self() {
         return LazzyHolder.SINGLE;
     }
 
@@ -175,7 +175,7 @@ public class ApacheNetworkClient {
         }
 
         HttpGet request = new HttpGet(url);
-        request.setHeader(USER_AGENT, ApacheConfig.config().getUserAgent());
+        request.setHeader(USER_AGENT, HttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 request.setHeader(item.getKey(), item.getValue());
@@ -211,7 +211,7 @@ public class ApacheNetworkClient {
         Objects.requireNonNull(url, "url");
 
         HttpPost request = new HttpPost(url);
-        request.setHeader(USER_AGENT, ApacheConfig.config().getUserAgent());
+        request.setHeader(USER_AGENT, HttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 request.setHeader(item.getKey(), item.getValue());
@@ -251,7 +251,7 @@ public class ApacheNetworkClient {
         Objects.requireNonNull(json, "json");
 
         HttpPost request = new HttpPost(url);
-        request.setHeader(USER_AGENT, ApacheConfig.config().getUserAgent());
+        request.setHeader(USER_AGENT, HttpConfig.config().getUserAgent());
         request.setHeader(ACCEPT, "application/json");
         request.setHeader(CONTENT_TYPE, "application/json; charset=utf-8");
         if (headers != null && headers.isEmpty() == false) {
@@ -281,7 +281,7 @@ public class ApacheNetworkClient {
         Objects.requireNonNull(xml, "xml");
 
         HttpPost request = new HttpPost(url);
-        request.setHeader(USER_AGENT, ApacheConfig.config().getUserAgent());
+        request.setHeader(USER_AGENT, HttpConfig.config().getUserAgent());
         request.setHeader(CONTENT_TYPE, "application/xml; charset=utf-8");
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
@@ -346,7 +346,7 @@ public class ApacheNetworkClient {
         Objects.requireNonNull(filePath, "filePath");
         try {
             HttpGet request = new HttpGet(url);
-            request.setHeader(USER_AGENT, ApacheConfig.config().getUserAgent());
+            request.setHeader(USER_AGENT, HttpConfig.config().getUserAgent());
             if (headers != null && headers.isEmpty() == false) {
                 for (Entry<String, String> item : headers.entrySet()) {
                     request.setHeader(item.getKey(), item.getValue());

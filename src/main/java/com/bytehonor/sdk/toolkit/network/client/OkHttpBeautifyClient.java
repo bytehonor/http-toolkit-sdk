@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.toolkit.network.config.OkhttpConfig;
+import com.bytehonor.sdk.toolkit.network.config.OkHttpConfig;
 import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
 
 import okhttp3.ConnectionPool;
@@ -30,23 +30,23 @@ import okhttp3.ResponseBody;
  * @author lijianqiang
  *
  */
-public class OkhttpNetworkClient {
+public class OkHttpBeautifyClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OkhttpNetworkClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClient.class);
 
     private static final String USER_AGENT_KEY = "User-Agent";
 
     private final OkHttpClient client;
 
-    private OkhttpNetworkClient() {
+    private OkHttpBeautifyClient() {
         this.client = build();
     }
 
     public static OkHttpClient build() {
-        return build(OkhttpConfig.config());
+        return build(OkHttpConfig.config());
     }
 
-    public static OkHttpClient build(OkhttpConfig config) {
+    public static OkHttpClient build(OkHttpConfig config) {
         ConnectionPool pool = new ConnectionPool(config.getMaxIdle(), 3L, TimeUnit.MINUTES);
         Dispatcher dispatcher = new Dispatcher();
         dispatcher.setMaxRequests(config.getConnectPollMaxTotal());
@@ -57,10 +57,10 @@ public class OkhttpNetworkClient {
     }
 
     private static class LazzyHolder {
-        private static OkhttpNetworkClient SINGLE = new OkhttpNetworkClient();
+        private static OkHttpBeautifyClient SINGLE = new OkHttpBeautifyClient();
     }
 
-    private static OkhttpNetworkClient self() {
+    private static OkHttpBeautifyClient self() {
         return LazzyHolder.SINGLE;
     }
 
@@ -140,7 +140,7 @@ public class OkhttpNetworkClient {
 
     private static Request.Builder createBuilder(Map<String, String> headers) {
         Request.Builder builder = new Request.Builder();
-        builder.header(USER_AGENT_KEY, OkhttpConfig.config().getUserAgent());
+        builder.header(USER_AGENT_KEY, OkHttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 builder.header(item.getKey(), item.getValue());
@@ -304,7 +304,7 @@ public class OkhttpNetworkClient {
         }
         RequestBody multipartBody = multipartBuilder.build();
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
+        builder.header("User-Agent", OkHttpConfig.config().getUserAgent());
         Request request = builder.url(url).post(multipartBody).build();
 
         return self().execute(request);

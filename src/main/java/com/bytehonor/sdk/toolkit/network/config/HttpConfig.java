@@ -1,6 +1,6 @@
 package com.bytehonor.sdk.toolkit.network.config;
 
-public class OkhttpConfig {
+public class HttpConfig {
 
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36";
 
@@ -10,6 +10,22 @@ public class OkhttpConfig {
 
     private static final int CONNECT_POOL_MAX_PER_ROUTE = 1024;
 
+    /**
+     * socket超时时间
+     * 
+     */
+    private static final int SOCKET_TIMEOUT = 5 * 1000;
+
+    /**
+     * 连接超时时间
+     */
+    private static final int CONNECT_TIMEOUT = 5 * 1000;
+
+    /**
+     * 连接请求超时时间
+     */
+    private static final int CONNECT_REQUEST_TIMEOUT = 5 * 1000;
+
     private String userAgent;
 
     private int maxIdle;
@@ -18,21 +34,27 @@ public class OkhttpConfig {
 
     private int connectPollMaxPerRoute;
 
-    private int connectTimeoutSeconds;
+    private int socketTimeout;
 
-    private OkhttpConfig() {
+    private int connectTimeout;
+
+    private int connectRequestTimeout;
+
+    private HttpConfig() {
         this.userAgent = USER_AGENT;
         this.maxIdle = MAX_IDLE;
         this.connectPollMaxTotal = CONNECT_POOL_MAX_TOTAL;
         this.connectPollMaxPerRoute = CONNECT_POOL_MAX_PER_ROUTE;
-        this.connectTimeoutSeconds = 5;
+        this.socketTimeout = SOCKET_TIMEOUT;
+        this.connectTimeout = CONNECT_TIMEOUT;
+        this.connectRequestTimeout = CONNECT_REQUEST_TIMEOUT;
     }
 
     private static class LazyHolder {
-        private static OkhttpConfig SINGLE = new OkhttpConfig();
+        private static HttpConfig SINGLE = new HttpConfig();
     }
 
-    public static OkhttpConfig config() {
+    public static HttpConfig config() {
         return LazyHolder.SINGLE;
     }
 
@@ -68,12 +90,28 @@ public class OkhttpConfig {
         this.connectPollMaxPerRoute = connectPollMaxPerRoute;
     }
 
-    public int getConnectTimeoutSeconds() {
-        return connectTimeoutSeconds;
+    public int getSocketTimeout() {
+        return socketTimeout;
     }
 
-    public void setConnectTimeoutSeconds(int connectTimeoutSeconds) {
-        this.connectTimeoutSeconds = connectTimeoutSeconds;
+    public void setSocketTimeout(int socketTimeout) {
+        this.socketTimeout = socketTimeout;
+    }
+
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public int getConnectRequestTimeout() {
+        return connectRequestTimeout;
+    }
+
+    public void setConnectRequestTimeout(int connectRequestTimeout) {
+        this.connectRequestTimeout = connectRequestTimeout;
     }
 
 }
