@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.beautify.okhttp.client;
+package com.bytehonor.sdk.toolkit.network.client;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.beautify.okhttp.config.OkHttpConfig;
-import com.bytehonor.sdk.beautify.okhttp.exception.OkHttpBeautifyException;
+import com.bytehonor.sdk.toolkit.network.config.OkhttpConfig;
+import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
 
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
@@ -30,23 +30,23 @@ import okhttp3.ResponseBody;
  * @author lijianqiang
  *
  */
-public class OkHttpBeautifyClient {
+public class OkhttpNetwork {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OkhttpNetwork.class);
 
     private static final String USER_AGENT_KEY = "User-Agent";
 
     private final OkHttpClient client;
 
-    private OkHttpBeautifyClient() {
+    private OkhttpNetwork() {
         this.client = build();
     }
 
     public static OkHttpClient build() {
-        return build(OkHttpConfig.config());
+        return build(OkhttpConfig.config());
     }
 
-    public static OkHttpClient build(OkHttpConfig config) {
+    public static OkHttpClient build(OkhttpConfig config) {
         ConnectionPool pool = new ConnectionPool(config.getMaxIdle(), 3L, TimeUnit.MINUTES);
         Dispatcher dispatcher = new Dispatcher();
         dispatcher.setMaxRequests(config.getConnectPollMaxTotal());
@@ -57,14 +57,14 @@ public class OkHttpBeautifyClient {
     }
 
     private static class LazzyHolder {
-        private static OkHttpBeautifyClient SINGLE = new OkHttpBeautifyClient();
+        private static OkhttpNetwork SINGLE = new OkhttpNetwork();
     }
 
-    private static OkHttpBeautifyClient self() {
+    private static OkhttpNetwork self() {
         return LazzyHolder.SINGLE;
     }
 
-    private String execute(Request request) throws OkHttpBeautifyException {
+    private String execute(Request request) throws NetworkToolkitException {
         String resultString = null;
         Response response = null;
         try {
@@ -78,7 +78,7 @@ public class OkHttpBeautifyClient {
             body.close();
         } catch (IOException e) {
             LOG.error("{}, error:{}", request.url(), e.getMessage());
-            throw new OkHttpBeautifyException(e);
+            throw new NetworkToolkitException(e);
         } finally {
             if (response != null) {
                 response.close(); // 20211024
@@ -92,9 +92,9 @@ public class OkHttpBeautifyClient {
      * 
      * @param url
      * @return
-     * @throws OkHttpBeautifyException
+     * @throws NetworkToolkitException
      */
-    public static String get(String url) throws OkHttpBeautifyException {
+    public static String get(String url) throws NetworkToolkitException {
         return get(url, null, null);
     }
 
@@ -104,9 +104,9 @@ public class OkHttpBeautifyClient {
      * @param url
      * @param params
      * @return
-     * @throws OkHttpBeautifyException
+     * @throws NetworkToolkitException
      */
-    public static String get(String url, Map<String, String> params) throws OkHttpBeautifyException {
+    public static String get(String url, Map<String, String> params) throws NetworkToolkitException {
         return get(url, params, null);
     }
 
@@ -117,10 +117,10 @@ public class OkHttpBeautifyClient {
      * @param params
      * @param headers
      * @return
-     * @throws OkHttpBeautifyException
+     * @throws NetworkToolkitException
      */
     public static String get(String url, Map<String, String> params, Map<String, String> headers)
-            throws OkHttpBeautifyException {
+            throws NetworkToolkitException {
         Objects.requireNonNull(url, "url");
         if (params != null && params.isEmpty() == false) {
             StringBuilder sb = new StringBuilder(url);
@@ -140,7 +140,7 @@ public class OkHttpBeautifyClient {
 
     private static Request.Builder createBuilder(Map<String, String> headers) {
         Request.Builder builder = new Request.Builder();
-        builder.header(USER_AGENT_KEY, OkHttpConfig.config().getUserAgent());
+        builder.header(USER_AGENT_KEY, OkhttpConfig.config().getUserAgent());
         if (headers != null && headers.isEmpty() == false) {
             for (Entry<String, String> item : headers.entrySet()) {
                 builder.header(item.getKey(), item.getValue());
@@ -155,9 +155,9 @@ public class OkHttpBeautifyClient {
      * @param url
      * @param params
      * @return
-     * @throws OkHttpBeautifyException
+     * @throws NetworkToolkitException
      */
-    public static String postForm(String url, Map<String, String> params) throws OkHttpBeautifyException {
+    public static String postForm(String url, Map<String, String> params) throws NetworkToolkitException {
         return postForm(url, params, null);
     }
 
@@ -168,10 +168,10 @@ public class OkHttpBeautifyClient {
      * @param params
      * @param headers
      * @return
-     * @throws OkHttpBeautifyException
+     * @throws NetworkToolkitException
      */
     public static String postForm(String url, Map<String, String> params, Map<String, String> headers)
-            throws OkHttpBeautifyException {
+            throws NetworkToolkitException {
         Objects.requireNonNull(url, "url");
         FormBody.Builder formBody = new FormBody.Builder();
         if (params != null && params.isEmpty() == false) {
@@ -274,20 +274,20 @@ public class OkHttpBeautifyClient {
         return self().execute(request);
     }
 
-    public static String uploadMedia(String url, Map<String, String> params, File file) throws OkHttpBeautifyException {
+    public static String uploadMedia(String url, Map<String, String> params, File file) throws NetworkToolkitException {
         return upload(url, params, file, "media");
     }
 
-    public static String uploadPic(String url, Map<String, String> params, File file) throws OkHttpBeautifyException {
+    public static String uploadPic(String url, Map<String, String> params, File file) throws NetworkToolkitException {
         return upload(url, params, file, "pic");
     }
 
-    public static String uploadFile(String url, Map<String, String> params, File file) throws OkHttpBeautifyException {
+    public static String uploadFile(String url, Map<String, String> params, File file) throws NetworkToolkitException {
         return upload(url, params, file, "file");
     }
 
     public static String upload(String url, Map<String, String> params, File file, String fileKey)
-            throws OkHttpBeautifyException {
+            throws NetworkToolkitException {
         Objects.requireNonNull(url, "url");
         MultipartBody.Builder multipartBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (file != null) {
@@ -304,7 +304,7 @@ public class OkHttpBeautifyClient {
         }
         RequestBody multipartBody = multipartBuilder.build();
         Request.Builder builder = new Request.Builder();
-        builder.header("User-Agent", OkHttpConfig.config().getUserAgent());
+        builder.header("User-Agent", OkhttpConfig.config().getUserAgent());
         Request request = builder.url(url).post(multipartBody).build();
 
         return self().execute(request);
@@ -347,11 +347,11 @@ public class OkHttpBeautifyClient {
                 }
                 fos.flush();
             } else {
-                throw new OkHttpBeautifyException("Unexpected response " + response.toString());
+                throw new NetworkToolkitException("Unexpected response " + response.toString());
             }
         } catch (IOException e) {
             LOG.error("download url:{}", url, e);
-            throw new OkHttpBeautifyException(e);
+            throw new NetworkToolkitException(e);
         } finally {
             if (is != null) {
                 try {

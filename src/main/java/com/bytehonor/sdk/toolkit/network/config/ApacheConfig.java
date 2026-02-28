@@ -1,0 +1,117 @@
+package com.bytehonor.sdk.toolkit.network.config;
+
+public class ApacheConfig {
+
+    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36";
+
+    private static final int MAX_IDLE = 10;
+
+    private static final int CONNECT_POOL_MAX_TOTAL = 1024;
+
+    private static final int CONNECT_POOL_MAX_PER_ROUTE = 1024;
+
+    /**
+     * socket超时时间
+     * 
+     */
+    private static final int SOCKET_TIMEOUT = 5 * 1000;
+
+    /**
+     * 连接超时时间
+     */
+    private static final int CONNECT_TIMEOUT = 5 * 1000;
+
+    /**
+     * 连接请求超时时间
+     */
+    private static final int CONNECT_REQUEST_TIMEOUT = 5 * 1000;
+
+    private String userAgent;
+
+    private int maxIdle;
+
+    private int connectPollMaxTotal;
+
+    private int connectPollMaxPerRoute;
+
+    private int socketTimeout;
+
+    private int connectTimeout;
+
+    private int connectRequestTimeout;
+
+    private ApacheConfig() {
+        this.userAgent = USER_AGENT;
+        this.maxIdle = MAX_IDLE;
+        this.connectPollMaxTotal = CONNECT_POOL_MAX_TOTAL;
+        this.connectPollMaxPerRoute = CONNECT_POOL_MAX_PER_ROUTE;
+        this.socketTimeout = SOCKET_TIMEOUT;
+        this.connectTimeout = CONNECT_TIMEOUT;
+        this.connectRequestTimeout = CONNECT_REQUEST_TIMEOUT;
+    }
+
+    private static class LazyHolder {
+        private static ApacheConfig SINGLE = new ApacheConfig();
+    }
+
+    public static ApacheConfig config() {
+        return LazyHolder.SINGLE;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public int getMaxIdle() {
+        return maxIdle;
+    }
+
+    public void setMaxIdle(int maxIdle) {
+        this.maxIdle = maxIdle;
+    }
+
+    public int getConnectPollMaxTotal() {
+        return connectPollMaxTotal;
+    }
+
+    public void setConnectPollMaxTotal(int connectPollMaxTotal) {
+        this.connectPollMaxTotal = connectPollMaxTotal;
+    }
+
+    public int getConnectPollMaxPerRoute() {
+        return connectPollMaxPerRoute;
+    }
+
+    public void setConnectPollMaxPerRoute(int connectPollMaxPerRoute) {
+        this.connectPollMaxPerRoute = connectPollMaxPerRoute;
+    }
+
+    public int getSocketTimeout() {
+        return socketTimeout;
+    }
+
+    public void setSocketTimeout(int socketTimeout) {
+        this.socketTimeout = socketTimeout;
+    }
+
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public int getConnectRequestTimeout() {
+        return connectRequestTimeout;
+    }
+
+    public void setConnectRequestTimeout(int connectRequestTimeout) {
+        this.connectRequestTimeout = connectRequestTimeout;
+    }
+
+}

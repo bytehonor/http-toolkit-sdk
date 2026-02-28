@@ -1,4 +1,4 @@
-package com.bytehonor.sdk.beautify.okhttp.client;
+package com.bytehonor.sdk.toolkit.network.client;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,20 +14,20 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bytehonor.sdk.beautify.okhttp.exception.OkHttpBeautifyException;
+import com.bytehonor.sdk.toolkit.network.exception.NetworkToolkitException;
 
-public class OkHttpBeautifyClientTest {
+public class OkhttpNetworkTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OkHttpBeautifyClientTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OkhttpNetworkTest.class);
 
 //    @Test
     public void testGetString2() {
         boolean isOk = true;
         try {
             // 测测header是否是浏览器的
-            String html = OkHttpBeautifyClient.get("https://www.bytehonor.com");
+            String html = OkhttpNetwork.get("https://www.bytehonor.com");
             LOG.info("html:{}", html);
-        } catch (OkHttpBeautifyException e) {
+        } catch (NetworkToolkitException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }
@@ -46,10 +46,10 @@ public class OkHttpBeautifyClientTest {
                 @Override
                 public void run() {
                     try {
-                        OkHttpBeautifyClient.get("https://www.baidu.com");
+                        OkhttpNetwork.get("https://www.baidu.com");
                         ai.incrementAndGet();
                         countDownLatch.countDown();
-                    } catch (OkHttpBeautifyException e) {
+                    } catch (NetworkToolkitException e) {
                         LOG.error("xxxx error:{}", e.getMessage());
                     }
                 }
@@ -77,7 +77,7 @@ public class OkHttpBeautifyClientTest {
             paramsMap.put("status", "xx");
             paramsMap.put("access_token", "xx");
 
-            String res = OkHttpBeautifyClient.uploadPic(url, paramsMap, file);
+            String res = OkhttpNetwork.uploadPic(url, paramsMap, file);
             LOG.info("res:{}", res);
         } catch (Exception e) {
             isOk = false;
@@ -92,7 +92,7 @@ public class OkHttpBeautifyClientTest {
         String filePath = "D:/test/A股列表.xlsx";
         boolean isOk = true;
         try {
-            OkHttpBeautifyClient.download(url, filePath);
+            OkhttpNetwork.download(url, filePath);
         } catch (Exception e) {
             isOk = false;
             LOG.error("testUpload", e);
@@ -109,7 +109,7 @@ public class OkHttpBeautifyClientTest {
             // Referer: https://m.weibo.cn/detail/4854157586215881
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Referer", "https://m.weibo.cn/detail/4854157586215881");
-            OkHttpBeautifyClient.download(url, path, headers);
+            OkhttpNetwork.download(url, path, headers);
             File file = new File(path);
             isOk = file.exists();
             LOG.info("isOk:{}", isOk);
@@ -127,9 +127,9 @@ public class OkHttpBeautifyClientTest {
             // 测测header是否是浏览器的
             String url = "https://proxy.bytehonor.com/body/test";
             String text = "helloworld1";
-            String res = OkHttpBeautifyClient.postPlain(url, text);
+            String res = OkhttpNetwork.postPlain(url, text);
             LOG.info("res:{}", res);
-        } catch (OkHttpBeautifyException e) {
+        } catch (NetworkToolkitException e) {
             LOG.error("xxxx", e);
             isOk = false;
         }
